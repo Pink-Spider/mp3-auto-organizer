@@ -136,12 +136,26 @@ python -m src.main -v
 ## 인식 실패 처리
 
 MusicBrainz/AcoustID 데이터베이스에 없는 파일은 `_unmatched` 폴더로 이동됩니다.
+**원본 폴더 구조가 유지됩니다.**
 
 | 상황 | 처리 |
 |------|------|
 | 핑거프린트 매칭 실패 | `_unmatched` 폴더로 이동 |
 | 매칭 신뢰도 50% 미만 | `_unmatched` 폴더로 이동 |
 | MusicBrainz에 정보 없음 | `_unmatched` 폴더로 이동 |
+
+```
+# 원본 구조
+/Music/
+  └── 노래모음/
+      └── unknown.mp3
+
+# 처리 후
+/Music/
+  └── _unmatched/
+      └── 노래모음/       ← 원본 폴더 구조 유지
+          └── unknown.mp3
+```
 
 ### 인식률 참고
 

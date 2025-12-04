@@ -77,6 +77,7 @@ def process_file(
     file_path: Path,
     config: dict,
     logger: logging.Logger,
+    source_base_path: Path,
     dry_run: bool = True,
 ) -> dict:
     """
@@ -99,6 +100,9 @@ def process_file(
         result["error"] = "AcoustID API 키가 설정되지 않았습니다"
         return result
 
+    output_path = Path(config.get("output_path") or config.get("source_path"))
+    unmatched_folder = config.get("options", {}).get("unmatched_folder", "_unmatched")
+
     # 1. AcoustID로 곡 식별
     try:
         matches = lookup_acoustid(api_key, file_path)
@@ -110,6 +114,9 @@ def process_file(
 
     if not matches:
         result["status"] = "unmatched"
+        result["file_changes"] = move_to_unmatched(
+            file_path, source_base_path, output_path, unmatched_folder, dry_run
+        )
         logger.warning(f"매칭 실패: {file_path}")
         return result
 
@@ -118,6 +125,9 @@ def process_file(
     if not best_match:
         result["status"] = "unmatched"
         result["error"] = "신뢰도 높은 매칭을 찾지 못했습니다"
+        result["file_changes"] = move_to_unmatched(
+            file_path, source_base_path, output_path, unmatched_folder, dry_run
+        )
         logger.warning(f"낮은 신뢰도 매칭: {file_path}")
         return result
 
@@ -125,6 +135,9 @@ def process_file(
     if not recording_id:
         result["status"] = "unmatched"
         result["error"] = "Recording ID를 찾지 못했습니다"
+        result["file_changes"] = move_to_unmatched(
+            file_path, source_base_path, output_path, unmatched_folder, dry_run
+        )
         return result
 
     result["acoustid_score"] = best_match.get("score", 0)
@@ -371,7 +384,11 @@ def main():
 
             progress.update(task, description=f"처리 중: {file_path.name[:30]}...")
 
-            result = process_file(file_path, config, logger, dry_run=dry_run)
+            result = process_file(
+                file_path, config, logger,
+                source_base_path=Path(source_path),
+                dry_run=dry_run
+            )
             results.append(result)
 
             progress.advance(task)

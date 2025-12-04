@@ -258,12 +258,31 @@ def organize_file(
 
 
 def move_to_unmatched(
-    file_path: Path, output_path: Path, unmatched_folder: str = "_unmatched", dry_run: bool = False
+    file_path: Path,
+    source_base_path: Path,
+    output_path: Path,
+    unmatched_folder: str = "_unmatched",
+    dry_run: bool = False,
 ) -> dict:
     """
     인식 실패한 파일을 unmatched 폴더로 이동합니다.
+    원본 폴더 구조를 유지합니다.
+
+    Args:
+        file_path: 원본 파일 경로
+        source_base_path: 스캔 시작 기준 경로
+        output_path: 출력 기본 경로
+        unmatched_folder: unmatched 폴더명
+        dry_run: True면 실제 이동하지 않음
     """
-    destination = output_path / unmatched_folder / file_path.name
+    # 원본 폴더 구조 유지
+    try:
+        relative_path = file_path.relative_to(source_base_path)
+    except ValueError:
+        # 상대 경로 계산 실패 시 파일명만 사용
+        relative_path = Path(file_path.name)
+
+    destination = output_path / unmatched_folder / relative_path
 
     return move_file(
         source=file_path,
