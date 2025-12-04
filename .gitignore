@@ -1,0 +1,17 @@
+# 환경 설정
+.env
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# 로그
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.swp

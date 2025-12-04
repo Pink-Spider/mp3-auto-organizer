@@ -1,0 +1,33 @@
+# MP3 Auto Organizer 설정
+# API 키와 경로는 .env 파일에서 관리됩니다.
+
+# 폴더 구조 템플릿
+# 사용 가능한 변수: {artist}, {album}, {year}
+folder_template: "{artist}/{album}"
+
+# 파일명 템플릿
+# 사용 가능한 변수: {track:02d}, {title}, {artist}, {album}
+filename_template: "{track:02d} - {title}"
+
+# 옵션
+options:
+  # dry_run: true면 실제 변경 없이 미리보기만
+  dry_run: true
+
+  # 원본 파일 백업 여부
+  backup: true
+
+  # 백업 경로 (비워두면 source_path/.backup)
+  backup_path: ""
+
+  # 인식 실패한 파일을 모을 폴더명
+  unmatched_folder: "_unmatched"
+
+  # 로그 파일 경로
+  log_file: "organizer.log"
+
+  # 파일명에서 제거할 특수문자 (윈도우 호환성)
+  sanitize_filenames: true
+
+  # 중복 파일 처리: skip, overwrite, rename
+  duplicate_action: "rename"
