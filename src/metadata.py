@@ -74,7 +74,7 @@ def fetch_metadata_by_recording_id(recording_id: str) -> Optional[TrackMetadata]
     try:
         result = musicbrainzngs.get_recording_by_id(
             recording_id,
-            includes=["artists", "releases", "release-groups"],
+            includes=["artists", "releases"],
         )
     except musicbrainzngs.WebServiceError:
         return None
