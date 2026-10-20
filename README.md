@@ -1,5 +1,9 @@
 # MP3 Auto Organizer
 
+[![Python](https://img.shields.io/badge/Python-3-3776AB?logo=python&logoColor=white)](https://www.python.org)
+[![MusicBrainz](https://img.shields.io/badge/MusicBrainz-BA478F?logo=musicbrainz&logoColor=white)](https://musicbrainz.org)
+[![AcoustID](https://img.shields.io/badge/AcoustID-Chromaprint-4A90D9)](https://acoustid.org)
+
 오디오 핑거프린팅을 사용하여 MP3 파일의 메타데이터를 자동으로 인식하고, 태그 업데이트 및 폴더/파일명 정리를 수행하는 도구입니다.
 
 ## 주요 기능
